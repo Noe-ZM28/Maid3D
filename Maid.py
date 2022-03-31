@@ -2,9 +2,10 @@ import pyttsx3
 import pywhatkit
 import speech_recognition as sr
 
-name = "Maid" 
+name = "computadora" 
 listener = sr.Recognizer()
 engine = pyttsx3.init()
+KEY = None
 
 
 voices = engine.getProperty('voices')
@@ -25,22 +26,31 @@ def talk (text):
 def listen():
     try:
         with sr.Microphone() as source:
-            print("Escuchando...")
             voice = listener.listen(source)
-            rec = listener.recognize_google(voice, language='es-ES')
+            listener.adjust_for_ambient_noise(source, 0.5)
+            rec = listener.recognize_google(voice,
+                                            key=KEY,
+                                            language='es-MX')
             rec = rec.lower()
+            print("Escuchando>: "+rec)
             
             if name in rec:
                 rec = rec.replace(name, '')
             
-            elif 'reproduce' in rec:
-                music = rec.replace('reproduce','')
-                pywhatkit.playonyt(music)
-                print("Reproduciendo " + music)
-                talk("Reproduciendo " + music)
-                
-            else:
-                talk("Disculpa, no te he enendido, ¿me lo puedes repetir?")
+                if 'reproduce' in rec:
+                    music = rec.replace('reproduce','')
+                    pywhatkit.playonyt(music)
+                    print("Reproduciendo>: " + music)
+                    talk("Reproduciendo " + music)
+                elif 'repite' in rec:
+                    repeat = rec.replace('repite','')
+                    talk(repeat)
+                else:
+                    talk("Comando desconocido")
+            elif "finaliza": exit()
+
+    except sr.UnknownValueError:
+        talk("Disculpa, no te he entendido, ¿me lo puedes repetir?")
     except:
         pass
     return rec
@@ -50,7 +60,7 @@ def runVA():
         try:
             rec = listen()
         except UnboundLocalError:
-            talk("No te entendí, intenta de nuevo...")
+            #talk("No te entendí, intenta de nuevo...")
             continue
 
 
