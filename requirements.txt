@@ -3,3 +3,6 @@ SpeechRecognition
 pyaudio
 pywhatkit
 flask
+wikipedia
+pygame
+keyboard
