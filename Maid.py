@@ -25,10 +25,7 @@ sites = {
     'twitter': 'https://twitter.com/?lang=es'
 }
 files = {
-    'google': 'google.com',
-    'youtube': 'youtube.com',
-    'escuela': 'http://cursos2.tlalnepantla.tecnm.mx',
-    'twitter': 'https://twitter.com/?lang=es'
+    'notas': 'notas.txt'
 }
 programs = {
         "navegador": "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
@@ -113,13 +110,13 @@ def runVA():
                     for any in programs:
                         if any in rec:
                             talk(f"abriendo {any}")
-                            os.startfile({programs[any]})
+                            subp.Popen({programs[any]})
 
 
                 elif 'archivo' in rec:
                     file = rec.replace('abre', '')
                     for file in files:
-                        if site in rec:
+                        if file in rec:
                             talk(f"abriendo {file}")
                             subp.Popen(f'{files[file]}', shell=True)
 
