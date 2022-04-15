@@ -29,7 +29,13 @@ files = {
 }
 programs = {
         "navegador": "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-        "escritorio remoto": "C:\Program Files (x86)\TeamViewer\TeamViewer.exe"
+        "escritorio remoto": "C:\Program Files (x86)\TeamViewer\TeamViewer.exe",
+        "lol": "C:\Riot Games\Riot Client\RiotClientServices.exe",
+        "configuracion": "C:\Windows\System32\control.exe",
+        "word": "C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE",
+        "excel": "C:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE",
+        "power point": "C:\Program Files\Microsoft Office\root\Office16\POWERPNT.EXE",
+        "": "",
 }
 
 engine.setProperty('voice', voices[1].id) # 1 para español o 0 para ingles
