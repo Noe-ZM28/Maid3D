@@ -7,6 +7,7 @@ import keyboard
 import subprocess as subp
 import os
 import json
+import pywhatkit
 
 name = "computadora" 
 listener = sr.Recognizer()
@@ -15,8 +16,6 @@ KEY = None
 
 voices = engine.getProperty('voices')
 
-with open('info.json') as f:
-    data = json.load(f)
 
 sites = {
     'google': 'google.com',
@@ -36,6 +35,11 @@ programs = {
         "excel": "C:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE",
         "power point": "C:\Program Files\Microsoft Office\root\Office16\POWERPNT.EXE",
         "": "",
+}
+contacts = {
+    'yo': '+525620504753',
+    'lala': '',
+    'chinos': ''
 }
 
 engine.setProperty('voice', voices[1].id) # 1 para español o 0 para ingles
@@ -58,11 +62,8 @@ def listen(Something = None):
             rec = rec.lower()
         
     except sr.UnknownValueError:
-        pass
-        #talk("Disculpa, no te he entendido, ¿me lo puedes repetir?")
-    except wikipedia.PageError:
         talk("Disculpa, no te he entendido, ¿me lo puedes repetir?")
-        pass
+
     except:
         pass
     return rec
@@ -77,6 +78,23 @@ def write(file):
     talk('Terminé de escribir, este es el resultado')
     subp.Popen("notas.txt", shell=True)
 
+def send_message(contact, number):
+    talk("¿Que quieres que diga el mensaje?")
+    message = listen("Escuchando mensaje>: ")
+    print(message)
+
+    
+    try:
+        pywhatkit.sendwhatmsg_instantly(number, 
+                                        message,
+                                        20,
+                                        True,
+                                        3)
+    except:
+        talk("Error al enviar el mensaje")
+
+    talk(f"Mensaje enviado a {contact}")
+
 def runVA():
     while True:
         try:
@@ -90,7 +108,7 @@ def runVA():
                     music = rec.replace('reproduce','')
                     pywhatkit.playonyt(music)
                     print(f"Reproduciendo>: {music}")
-                    talk(f"Reproduciendo {music}")
+                    talk(f"Reproduciendo: {music}")
 
 
                 elif 'repite' in rec:
@@ -137,6 +155,19 @@ def runVA():
                         write(file)
 
 
+                elif 'envía' in rec:
+                    contact = rec.replace('envia', '')
+                    if 'mensaje' in rec: #arreglar
+                        contact = rec.replace('mensaje', '')
+                        for contact in contacts:
+                            if contact in rec:
+                                talk(f"enviando mensaje para: {contact}")
+                                send_message(contact, contacts[contact])
+
+                    if 'correo' in rec: #pendiente
+                        pass
+
+
                 elif "termina" in rec:
                     talk("Hasta pronto")
                     break
@@ -146,6 +177,9 @@ def runVA():
 
 
         except UnboundLocalError:
+            continue
+        except wikipedia.PageError:
+            talk("Disculpa, no encontré resultados para tu búsqueda")
             continue
         except:
             continue
