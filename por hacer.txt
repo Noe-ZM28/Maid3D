@@ -1,2 +1,6 @@
 selenium para whatsap
+https://developer.microsoft.com/es-es/microsoft-edge/tools/webdriver/
+https://chromedriver.chromium.org/downloads
+https://www.geeksforgeeks.org/click-button-by-text-using-python-and-selenium/
+https://levelup.gitconnected.com/automate-whatsapp-messages-with-python-instantly-3e08d6600612
 interface gif animación
