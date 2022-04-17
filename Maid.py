@@ -8,12 +8,27 @@ import subprocess as subp
 import os
 import json
 import pywhatkit
+from selenium import webdriver
+from selenium.webdriver.edge.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.edge.options import Options
+import time
+import webbrowser as web
+from urllib.parse import quote
+
+
 
 name = "computadora" 
 listener = sr.Recognizer()
 engine = pyttsx3.init()
 KEY = None
+diverEdgePath = Service("./Drivers/edgedriver_win64/msedgedriver.exe")
+user_profile = r"C:/Users/brink/AppData/Local/Microsoft/Edge/User Data/Default"
 
+options = Options()
+options.binary_location = "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"
+options.add_argument(f"--user-data-dir={user_profile}")
+options.add_argument("--profile-directory=Default")
 voices = engine.getProperty('voices')
 
 
@@ -38,8 +53,7 @@ programs = {
 }
 contacts = {
     'yo': '+525620504753',
-    'lala': '',
-    'chinos': ''
+    'lala': ''
 }
 
 engine.setProperty('voice', voices[1].id) # 1 para español o 0 para ingles
@@ -79,21 +93,36 @@ def write(file):
     subp.Popen("notas.txt", shell=True)
 
 def send_message(contact, number):
-    talk("¿Que quieres que diga el mensaje?")
-    message = listen("Escuchando mensaje>: ")
-    print(message)
+    try: 
+        talk("¿Que quieres que diga el mensaje?")
+        message = listen("Escuchando mensaje>: ")
+        print(message)
 
-    
-    try:
+    #     driver = webdriver.Edge(service = diverEdgePath, options = options)
+
+    #     driver.get(f"https://web.whatsapp.com/send?phone={number}&text={quote(message)}")
+
+    #     driver.maximize_window()
+    #     time.sleep(30)
+
+    #     # Obtain button by link text and click.
+    #     button = driver.find_element(by=By.CLASS_NAME, value = "_3HQNh _1Ae7k")
+    #     button.click()
+
+    #     talk(f"Mensaje enviado a {contact}")
+
+    # except Exception as e:
+    #     print(f"Error: {e}")
         pywhatkit.sendwhatmsg_instantly(number, 
                                         message,
                                         20,
                                         True,
                                         3)
-    except:
-        talk("Error al enviar el mensaje")
+        talk(f"Mensaje enviado a {contact}")
 
-    talk(f"Mensaje enviado a {contact}")
+    except Exception as e:
+        print(f"Error: {e}")
+
 
 def runVA():
     while True:
@@ -115,7 +144,6 @@ def runVA():
                     repeat = rec.replace('repite','')
                     talk(repeat)
 
-
                 elif 'busca' in rec:
                     search = rec.replace('busca', '')
                     wikipedia.set_lang('es')
@@ -123,7 +151,6 @@ def runVA():
                     talk(f'Buscando...{search}')
                     print(f"{search}>: {wiki}")
                     talk(wiki)
-
 
                 elif 'abre' in rec:
                     any = rec.replace('abre', '')
@@ -136,14 +163,12 @@ def runVA():
                             talk(f"abriendo {any}")
                             subp.Popen({programs[any]})
 
-
                 elif 'archivo' in rec:
                     file = rec.replace('abre', '')
                     for file in files:
                         if file in rec:
                             talk(f"abriendo {file}")
                             subp.Popen(f'{files[file]}', shell=True)
-
 
                 elif 'escribe' in rec:
                     writte = rec.replace('escribe', '')
@@ -154,7 +179,6 @@ def runVA():
                         file = open("notas.txt", "w")
                         write(file)
 
-
                 elif 'envía' in rec:
                     contact = rec.replace('envia', '')
                     if 'mensaje' in rec: #arreglar
@@ -162,11 +186,10 @@ def runVA():
                         for contact in contacts:
                             if contact in rec:
                                 talk(f"enviando mensaje para: {contact}")
-                                send_message(contact, contacts[contact])
-
-                    if 'correo' in rec: #pendiente
+                                send_message(contact = contact, number = contacts[contact])
+                    #pendiente
+                    if 'correo' in rec: 
                         pass
-
 
                 elif "termina" in rec:
                     talk("Hasta pronto")
@@ -174,14 +197,13 @@ def runVA():
             elif "termina" in rec:
                 talk("Hasta pronto")
                 break
-
-
         except UnboundLocalError:
             continue
         except wikipedia.PageError:
-            talk("Disculpa, no encontré resultados para tu búsqueda")
+            talk("Disculpa, no encontré resultados para la búsqueda indicada.")
             continue
-        except:
+        except Exception as e:
+            print(f"Error: {e}")
             continue
 
 

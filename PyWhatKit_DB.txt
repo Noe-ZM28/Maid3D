@@ -28,3 +28,13 @@ Time: 23:4
 Phone Number: +525620504753
 Message: este es un mensaje de prueba enviado desde un asistente virtual
 --------------------
+Date: 16/4/2022
+Time: 20:7
+Phone Number: +525620504753
+Message: mensaje de prueba enviado desde un asistente virtual
+--------------------
+Date: 16/4/2022
+Time: 20:10
+Phone Number: +525620504753
+Message: mensaje de prueba
+--------------------
