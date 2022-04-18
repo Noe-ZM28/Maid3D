@@ -2,8 +2,6 @@ import pyttsx3
 import pywhatkit
 import speech_recognition as sr
 import wikipedia
-import datetime
-import keyboard
 import subprocess as subp
 import os
 import json
@@ -23,23 +21,25 @@ listener = sr.Recognizer()
 engine = pyttsx3.init()
 KEY = None
 diverEdgePath = Service("./Drivers/edgedriver_win64/msedgedriver.exe")
-user_profile = r"C:/Users/brink/AppData/Local/Microsoft/Edge/User Data/Default"
+user_profile = "C:/Users/brink/AppData/Local/Microsoft/Edge/User Data/Default"
 
 options = Options()
 options.binary_location = "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"
 options.add_argument(f"--user-data-dir={user_profile}")
-options.add_argument("--profile-directory=Default")
+options.add_argument(f"--profile-directory=Default")
 voices = engine.getProperty('voices')
 
 
 sites = {
-    'google': 'google.com',
-    'youtube': 'youtube.com',
+    'google': 'https://www.google.com.mx/',
+    'youtube': 'https://www.youtube.com/?gl=MX',
     'escuela': 'http://cursos2.tlalnepantla.tecnm.mx',
-    'twitter': 'https://twitter.com/?lang=es'
+    'twitter': 'https://twitter.com/?lang=es',
+    '': ''
 }
 files = {
-    'notas': 'notas.txt'
+    'notas': 'notas.txt',
+    '': ''
 }
 programs = {
         "navegador": "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
@@ -53,7 +53,8 @@ programs = {
 }
 contacts = {
     'yo': '+525620504753',
-    'lala': ''
+    'lala': '',
+    '': ''
 }
 
 engine.setProperty('voice', voices[1].id) # 1 para español o 0 para ingles
@@ -64,9 +65,9 @@ def talk (text):
    engine.say(text)
    engine.runAndWait()
 
-def listen(Something = None):
+def listen(SomeText = None):
     try:
-        print(f'{Something}')
+        print(f'{SomeText}')
         with sr.Microphone() as source:
             voice = listener.listen(source)
             listener.adjust_for_ambient_noise(source, 0.5)
@@ -112,12 +113,8 @@ def send_message(contact, number):
     #     talk(f"Mensaje enviado a {contact}")
 
     # except Exception as e:
-    #     print(f"Error: {e}")
-        pywhatkit.sendwhatmsg_instantly(number, 
-                                        message,
-                                        20,
-                                        True,
-                                        3)
+    #     print(f"{e}")
+        pywhatkit.sendwhatmsg_instantly(number, message, 20, True, 5)
         talk(f"Mensaje enviado a {contact}")
 
     except Exception as e:
@@ -138,7 +135,6 @@ def runVA():
                     pywhatkit.playonyt(music)
                     print(f"Reproduciendo>: {music}")
                     talk(f"Reproduciendo: {music}")
-
 
                 elif 'repite' in rec:
                     repeat = rec.replace('repite','')
@@ -175,7 +171,7 @@ def runVA():
                     try:
                         with open("notas.txt", "a") as file:
                             write(file)
-                    except FileNotFoundError as e:
+                    except FileNotFoundError:
                         file = open("notas.txt", "w")
                         write(file)
 
@@ -187,9 +183,9 @@ def runVA():
                             if contact in rec:
                                 talk(f"enviando mensaje para: {contact}")
                                 send_message(contact = contact, number = contacts[contact])
-                    #pendiente
-                    if 'correo' in rec: 
-                        pass
+                    
+                    if 'correo' in rec: #pendiente
+                        contact = rec.replace('correo', '')
 
                 elif "termina" in rec:
                     talk("Hasta pronto")

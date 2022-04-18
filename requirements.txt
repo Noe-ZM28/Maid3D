@@ -7,3 +7,4 @@ wikipedia
 pygame
 keyboard
 selenium
+quick-mailer
