@@ -59,4 +59,3 @@ class tkvideo():
         thread.daemon = 1
         thread.start()
         return thread #alfun dia encontraré la forma de cerrar este hilo xd
-        
