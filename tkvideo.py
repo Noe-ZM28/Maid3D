@@ -21,11 +21,12 @@ class tkvideo():
             default is 640x360) 
     
     """
-    def __init__(self, label, path, loop = False, size = (640,360)):
+    def __init__(self, label, path, loop = False, size = (640,360), Stop = False):
         self.path = path
         self.label = label
         self.loop = loop
         self.size = size
+        self.Stop = Stop
 
     def load(self, path, loop, label):
         """
@@ -40,9 +41,9 @@ class tkvideo():
                 frame_image = ImageTk.PhotoImage(Image.fromarray(image).resize(self.size))
                 label.config(image=frame_image)
                 label.image = frame_image
-
-
                 sleep(0.01)
+            else:
+                pass
         if loop:
             while True:
                 play_video()
@@ -57,3 +58,5 @@ class tkvideo():
         thread = threading.Thread(target=self.load, args=(self.path, self.loop, self.label))
         thread.daemon = 1
         thread.start()
+        return thread #alfun dia encontraré la forma de cerrar este hilo xd
+        
