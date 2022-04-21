@@ -23,10 +23,9 @@ class tkvideo():
     """
     def __init__(self, label, path, loop = False, size = (640,360)):
         self.path = path
-        #self.label = label
+        self.label = label
         self.loop = loop
         self.size = size
-        self.label = label
 
     def load(self, path, loop, label):
         """
@@ -50,7 +49,7 @@ class tkvideo():
         else:
             play_video()
 
-    def play(self):
+    def play_Video(self):
         """
             Creates and starts a thread as a daemon that plays the video by rapidly going through
             the video's frames.

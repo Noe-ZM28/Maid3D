@@ -1,4 +1,7 @@
+from json import load
 from tkinter import Tk, Label, Button
+
+from requests import delete
 from tkvideo import tkvideo
 import pyautogui
 
@@ -11,7 +14,7 @@ pos_x = int(width/3)
 pos_y = int(height/8)
 width_screen = 600
 height_screen = 400
- 
+
 size_video = (width_screen-100,height_screen-100)
 
 main_window = Tk()
@@ -20,20 +23,15 @@ main_window.resizable(0, 0)
 main_window.configure(background = 'black')
 
 my_label = Label(main_window)
+player = tkvideo(label = my_label, path = path_b, loop = True, size = size_video)
 my_label.pack()
+player.play_Video()
 
-player = tkvideo(label = my_label, path = path_a, loop = True, size = size_video)
-player.play()
-
-def replace_video(label, path_video):
-    label.destroy()
-    label = Label(main_window)
-    label.pack()
-
-    player = tkvideo(label = label, path = path_video, loop = True, size = size_video)
-    player.play()
+def replace_video(player, path_video):
+    player = tkvideo(label = my_label, path = path_video, loop = True, size = size_video)
+    player.play_Video()
     
-button = Button(main_window, text="Click Me", command= lambda:replace_video(my_label, path_b))
+button = Button(main_window, text="Click Me", command= lambda:replace_video(player=player, path_video = path_a))
 button.pack()
 
 main_window.mainloop()
