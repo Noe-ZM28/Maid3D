@@ -1,0 +1,40 @@
+Date: 15/4/2022
+Time: 21:50
+Phone Number: +525620504753
+Message: este es un mensaje de prueba enviado desde un asistente virtual
+--------------------
+Date: 15/4/2022
+Time: 21:58
+Phone Number: +525620504753
+Message: mensaje de prueba
+--------------------
+Date: 15/4/2022
+Time: 22:3
+Phone Number: +525620504753
+Message: este es un mensaje de prueba enviar rápido
+--------------------
+Date: 15/4/2022
+Time: 22:50
+Phone Number: +525620504753
+Message: este es un mensaje enviado desde un asistente virtual
+--------------------
+Date: 15/4/2022
+Time: 23:2
+Phone Number: +525620504753
+Message: mensaje de prueba
+--------------------
+Date: 15/4/2022
+Time: 23:4
+Phone Number: +525620504753
+Message: este es un mensaje de prueba enviado desde un asistente virtual
+--------------------
+Date: 16/4/2022
+Time: 20:7
+Phone Number: +525620504753
+Message: mensaje de prueba enviado desde un asistente virtual
+--------------------
+Date: 16/4/2022
+Time: 20:10
+Phone Number: +525620504753
+Message: mensaje de prueba
+--------------------

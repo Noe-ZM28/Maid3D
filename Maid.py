@@ -2,30 +2,44 @@ import pyttsx3
 import pywhatkit
 import speech_recognition as sr
 import wikipedia
-import datetime
-import keyboard
 import subprocess as subp
 import os
 import json
+import pywhatkit
+from selenium import webdriver
+from selenium.webdriver.edge.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.edge.options import Options
+import time
+import webbrowser as web
+from urllib.parse import quote
+
+
 
 name = "computadora" 
 listener = sr.Recognizer()
 engine = pyttsx3.init()
 KEY = None
+diverEdgePath = Service("./Drivers/edgedriver_win64/msedgedriver.exe")
+user_profile = "C:/Users/brink/AppData/Local/Microsoft/Edge/User Data/Default"
 
+options = Options()
+options.binary_location = "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"
+options.add_argument(f"--user-data-dir={user_profile}")
+options.add_argument(f"--profile-directory=Default")
 voices = engine.getProperty('voices')
 
-with open('info.json') as f:
-    data = json.load(f)
 
 sites = {
-    'google': 'google.com',
-    'youtube': 'youtube.com',
+    'google': 'https://www.google.com.mx/',
+    'youtube': 'https://www.youtube.com/?gl=MX',
     'escuela': 'http://cursos2.tlalnepantla.tecnm.mx',
-    'twitter': 'https://twitter.com/?lang=es'
+    'twitter': 'https://twitter.com/?lang=es',
+    '': ''
 }
 files = {
-    'notas': 'notas.txt'
+    'notas': 'notas.txt',
+    '': ''
 }
 programs = {
         "navegador": "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
@@ -37,6 +51,11 @@ programs = {
         "power point": "C:\Program Files\Microsoft Office\root\Office16\POWERPNT.EXE",
         "": "",
 }
+contacts = {
+    'yo': '+525620504753',
+    'lala': '',
+    '': ''
+}
 
 engine.setProperty('voice', voices[1].id) # 1 para español o 0 para ingles
 engine.setProperty('rate', 178)
@@ -46,9 +65,9 @@ def talk (text):
    engine.say(text)
    engine.runAndWait()
 
-def listen(Something = None):
+def listen(SomeText = None):
     try:
-        print(f'{Something}')
+        print(f'{SomeText}')
         with sr.Microphone() as source:
             voice = listener.listen(source)
             listener.adjust_for_ambient_noise(source, 0.5)
@@ -58,11 +77,8 @@ def listen(Something = None):
             rec = rec.lower()
         
     except sr.UnknownValueError:
-        pass
-        #talk("Disculpa, no te he entendido, ¿me lo puedes repetir?")
-    except wikipedia.PageError:
         talk("Disculpa, no te he entendido, ¿me lo puedes repetir?")
-        pass
+
     except:
         pass
     return rec
@@ -77,6 +93,34 @@ def write(file):
     talk('Terminé de escribir, este es el resultado')
     subp.Popen("notas.txt", shell=True)
 
+def send_message(contact, number):
+    try: 
+        talk("¿Que quieres que diga el mensaje?")
+        message = listen("Escuchando mensaje>: ")
+        print(message)
+
+    #     driver = webdriver.Edge(service = diverEdgePath, options = options)
+
+    #     driver.get(f"https://web.whatsapp.com/send?phone={number}&text={quote(message)}")
+
+    #     driver.maximize_window()
+    #     time.sleep(30)
+
+    #     # Obtain button by link text and click.
+    #     button = driver.find_element(by=By.CLASS_NAME, value = "_3HQNh _1Ae7k")
+    #     button.click()
+
+    #     talk(f"Mensaje enviado a {contact}")
+
+    # except Exception as e:
+    #     print(f"{e}")
+        pywhatkit.sendwhatmsg_instantly(number, message, 20, True, 5)
+        talk(f"Mensaje enviado a {contact}")
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+
 def runVA():
     while True:
         try:
@@ -90,13 +134,11 @@ def runVA():
                     music = rec.replace('reproduce','')
                     pywhatkit.playonyt(music)
                     print(f"Reproduciendo>: {music}")
-                    talk(f"Reproduciendo {music}")
-
+                    talk(f"Reproduciendo: {music}")
 
                 elif 'repite' in rec:
                     repeat = rec.replace('repite','')
                     talk(repeat)
-
 
                 elif 'busca' in rec:
                     search = rec.replace('busca', '')
@@ -105,7 +147,6 @@ def runVA():
                     talk(f'Buscando...{search}')
                     print(f"{search}>: {wiki}")
                     talk(wiki)
-
 
                 elif 'abre' in rec:
                     any = rec.replace('abre', '')
@@ -118,7 +159,6 @@ def runVA():
                             talk(f"abriendo {any}")
                             subp.Popen({programs[any]})
 
-
                 elif 'archivo' in rec:
                     file = rec.replace('abre', '')
                     for file in files:
@@ -126,16 +166,26 @@ def runVA():
                             talk(f"abriendo {file}")
                             subp.Popen(f'{files[file]}', shell=True)
 
-
                 elif 'escribe' in rec:
                     writte = rec.replace('escribe', '')
                     try:
                         with open("notas.txt", "a") as file:
                             write(file)
-                    except FileNotFoundError as e:
+                    except FileNotFoundError:
                         file = open("notas.txt", "w")
                         write(file)
 
+                elif 'envía' in rec:
+                    contact = rec.replace('envia', '')
+                    if 'mensaje' in rec: #arreglar
+                        contact = rec.replace('mensaje', '')
+                        for contact in contacts:
+                            if contact in rec:
+                                talk(f"enviando mensaje para: {contact}")
+                                send_message(contact = contact, number = contacts[contact])
+                    
+                    if 'correo' in rec: #pendiente
+                        contact = rec.replace('correo', '')
 
                 elif "termina" in rec:
                     talk("Hasta pronto")
@@ -143,11 +193,13 @@ def runVA():
             elif "termina" in rec:
                 talk("Hasta pronto")
                 break
-
-
         except UnboundLocalError:
             continue
-        except:
+        except wikipedia.PageError:
+            talk("Disculpa, no encontré resultados para la búsqueda indicada.")
+            continue
+        except Exception as e:
+            print(f"Error: {e}")
             continue
 
 
