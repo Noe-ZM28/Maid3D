@@ -42,6 +42,7 @@ class tkvideo():
                 label.config(image=frame_image)
                 label.image = frame_image
                 sleep(0.01)
+
             else:
                 pass
         if loop:
@@ -55,7 +56,16 @@ class tkvideo():
             Creates and starts a thread as a daemon that plays the video by rapidly going through
             the video's frames.
         """
-        thread = threading.Thread(target=self.load, args=(self.path, self.loop, self.label))
-        thread.daemon = 1
-        thread.start()
-        return thread #alfun dia encontraré la forma de cerrar este hilo xd
+        try: 
+            thread = threading.Thread(target=self.load, args=(self.path, self.loop, self.label))
+            thread.daemon = 1
+            thread.start()
+            return thread #algun dia encontraré la forma de cerrar este hilo xd
+        except Exception as e:
+            exception_type, exception_object, exception_traceback = sys.exc_info()
+            filename = exception_traceback.tb_frame.f_code.co_filename
+            line_number = exception_traceback.tb_lineno
+
+            print("Exception type: ", exception_type)
+            print("File name: ", filename)
+            print("Line number: ", line_number)

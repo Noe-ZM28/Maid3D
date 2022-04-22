@@ -15,10 +15,6 @@ import time
 import webbrowser as web
 from urllib.parse import quote
 
-from tkinter import Tk, Label, Button
-from tkvideo import tkvideo
-import pyautogui
-
 class Funtions:
     """
         Contiene los metodos correspondientes para la función del VA
@@ -44,6 +40,8 @@ class Funtions:
         """
         """
         #<----------------------------------------------------------------------------------------->
+        self.name = "computadora"
+
         self.listener = sr.Recognizer()
         self.engine = pyttsx3.init()
 
@@ -88,30 +86,8 @@ class Funtions:
         self.contacts = {
             'yo': '+525620504753',
             'lala': '',
-            '': ''
+            'alina': '+525567038818'
         }
-
-        #<------------------------------------------------->
-        self.path_a = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//source//Fellings//Test//a.mp4'
-        self.path_b = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//source//Fellings//Test//b.mp4'
-        self.cut5 = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//source//Fellings//Test//cut5.mp4'
-
-        self.width, self.height= pyautogui.size()
-        self.pos_x = int(self.width/3)
-        self.pos_y = int(self.height/8)
-        self.width_screen = 600
-        self.height_screen = 400
-
-        self.size_video = (self.width_screen-100,self.height_screen-100)
-
-        self.main_window = Tk()
-        self.main_window.geometry(f"{self.width_screen}x{self.height_screen}+{self.pos_x}+{self.pos_y}")
-        self.main_window.resizable(0, 0)
-        self.main_window.configure(background = 'black')
-
-        self.my_label = Label(self.main_window)
-
-
 
     def listen(self, SomeText = None):
         """
@@ -126,11 +102,17 @@ class Funtions:
                 rec = rec.lower()
             
         except sr.UnknownValueError:
-            self.talk("Disculpa, no te he entendido, ¿me lo puedes repetir?")
+            pass#self.talk("Disculpa, no te he entendido, ¿me lo puedes repetir?")
         except UnboundLocalError:
             pass
         except Exception as e:
-            print(f'{e}')
+            exception_type, exception_object, exception_traceback = sys.exc_info()
+            filename = exception_traceback.tb_frame.f_code.co_filename
+            line_number = exception_traceback.tb_lineno
+
+            print("Exception type: ", exception_type)
+            print("File name: ", filename)
+            print("Line number: ", line_number)
 
         return rec
 
@@ -139,6 +121,11 @@ class Funtions:
         """
         self.engine.say(text)
         self.engine.runAndWait()
+
+    def play(self, music):
+        pywhatkit.playonyt(music)
+        print(f"Reproduciendo>: {music}")
+        self.talk(f"Reproduciendo: {music}")
 
     def write(self, file):
         """
@@ -154,7 +141,13 @@ class Funtions:
             subp.Popen("notas.txt", shell=True)
 
         except Exception as e:
-            print(f'{e}')
+            exception_type, exception_object, exception_traceback = sys.exc_info()
+            filename = exception_traceback.tb_frame.f_code.co_filename
+            line_number = exception_traceback.tb_lineno
+
+            print("Exception type: ", exception_type)
+            print("File name: ", filename)
+            print("Line number: ", line_number)
 
     def send_message_wha(self, contact, number):
         """
@@ -167,7 +160,13 @@ class Funtions:
             self.talk(f"Mensaje enviado a: {contact}")
 
         except Exception as e:
-            print(f"Error: {e}")
+            exception_type, exception_object, exception_traceback = sys.exc_info()
+            filename = exception_traceback.tb_frame.f_code.co_filename
+            line_number = exception_traceback.tb_lineno
+
+            print("Exception type: ", exception_type)
+            print("File name: ", filename)
+            print("Line number: ", line_number)
 
     def send_message(self, contact, number):
         """
@@ -192,7 +191,13 @@ class Funtions:
             self.talk(f"Mensaje enviado a {contact}")
 
         except Exception as e:
-            print(f"{e}")
+            exception_type, exception_object, exception_traceback = sys.exc_info()
+            filename = exception_traceback.tb_frame.f_code.co_filename
+            line_number = exception_traceback.tb_lineno
+
+            print("Exception type: ", exception_type)
+            print("File name: ", filename)
+            print("Line number: ", line_number)
 
     def search(self, search):
         """
@@ -209,35 +214,11 @@ class Funtions:
             pass
         except wikipedia.DisambiguationError:
             self.talk(f"Lo siento, {search} es demasiado ambiguo, por favor sea mas claro en lo que quieres que busque.")
-
-
-
-    def start_Gui(self):
-        """
-        """
-        button1 = Button(self.main_window, text="Video 1", command= lambda:self.replace_video(path_video = self.path_a))
-        button1.pack()
-        button2 = Button(self.main_window, text="Video 2", command= lambda:self.replace_video(path_video = self.path_b))
-        button2.pack()
-
-        player = tkvideo(label = self.my_label, path = self.cut5, loop = True, size = self.size_video)
-
-        self.my_label.pack()
-        player.play_Video()
-
-        self.main_window.mainloop()
-
-    def replace_video(self, path_video):
-        """
-        """
-        try: 
-            self.my_label.destroy()
-            self.my_label = Label(self.main_window)
-            player = tkvideo(label = self.my_label, path = path_video, loop = True, size = self.size_video, Stop=True)
-            
-            self.my_label.pack()
-            player.play_Video()
-            
         except Exception as e:
-            print (f'Error: {e}')
+            exception_type, exception_object, exception_traceback = sys.exc_info()
+            filename = exception_traceback.tb_frame.f_code.co_filename
+            line_number = exception_traceback.tb_lineno
 
+            print("Exception type: ", exception_type)
+            print("File name: ", filename)
+            print("Line number: ", line_number)
