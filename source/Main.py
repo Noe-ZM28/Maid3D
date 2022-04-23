@@ -5,7 +5,6 @@ import pyautogui
 import threading
 import sys
 
-import subprocess as subp
 
 Brain = Funtions()
 #<----------------------------------------------------------------------------------->
@@ -34,7 +33,7 @@ my_label = Label(main_window)
 def replace_video(path_video):
     """
     """
-    try: 
+    try:
         global my_label
         my_label.destroy()
         my_label = Label(main_window)
@@ -73,26 +72,8 @@ def runVA():
                     Brain.search(search)
 
                 elif 'abre' in rec:
-                    any = rec.replace('abre', '')
-                    for any in Brain.sites:
-                        if any in rec:
-                            Brain.talk(f"abriendo {any}")
-                            subp.call(f'start msedge.exe {Brain.sites[any]}', shell=True)
-                    for any in Brain.programs:
-                        if any in rec:
-                            Brain.talk(f"abriendo {any}")
-                            subp.Popen({Brain.programs[any]})
-                    else:
-                        Brain.talk(f'{any} no se encuentra dentro de la información guardada')
-
-                elif 'archivo' in rec:
-                    file = rec.replace('abre', '')
-                    for file in Brain.files:
-                        if file in rec:
-                            Brain.talk(f"abriendo {file}")
-                            subp.Popen(f'{Brain.files[file]}', shell=True)
-                    else:
-                        Brain.talk(f'{any} no se encuentra dentro de la información guardada')
+                    something = rec.replace('abre', '')
+                    Brain.open_something(something)
 
                 elif 'escribe' in rec:
                     writte = rec.replace('escribe', '')
@@ -116,7 +97,6 @@ def runVA():
                         contact = rec.replace('correo', '')
                         Brain.talk(f"Función no disponible")
 
-                
                 elif "termina" in rec:
                     Brain.talk("Hasta pronto")
                     break
@@ -137,7 +117,6 @@ def runVA():
                 break
         except UnboundLocalError:
             continue
-
         except Exception as e:
             exception_type, exception_object, exception_traceback = sys.exc_info()
             filename = exception_traceback.tb_frame.f_code.co_filename
@@ -148,30 +127,32 @@ def runVA():
             print("Line number: ", line_number)
 
 def hilo_runVA():
-    thread = threading.Thread(target=runVA)
+    thread = threading.Thread(target=runVA, name='Asistente V')
     thread.daemon = 1
     thread.start()
     return thread #algun dia encontraré la forma de cerrar este hilo xd
 
 #<----------------------------------------------------------------------------------->
 
-#<----------------------------------------------------------------------------------->
+#<------------------------------------- G U I---------------------------------------------->
+try:
+    button1 = Button(main_window, text="On", command= hilo_runVA)
+    button1["bg"] = "white"
+    button1.pack()
 
-button1 = Button(main_window, text="On", command= hilo_runVA)
-button1["bg"] = "white"
-button1.pack()
+    player = tkvideo(label = my_label, path = cut5, loop = True, size = size_video)
+    my_label.pack()
+    player.play_Video()
+    #<----------------------------------------------------------------------------------->
 
-button2 = Button(main_window, text="Video 1", command= lambda:replace_video(path_video = path_a))
-button2.pack()
-button3 = Button(main_window, text="Video 2", command= lambda:replace_video(path_video = path_b))
-button3.pack()
-button4 = Button(main_window, text="Video 3", command= lambda:replace_video(path_video = cut))
-button4.pack()
+    main_window.mainloop()
 
-# player = tkvideo(label = my_label, path = cut5, loop = True, size = size_video)
-# my_label.pack()
-# player.play_Video()
-#<----------------------------------------------------------------------------------->
+except Exception as e:
+    exception_type, exception_object, exception_traceback = sys.exc_info()
+    filename = exception_traceback.tb_frame.f_code.co_filename
+    line_number = exception_traceback.tb_lineno
 
-
-main_window.mainloop()
+    print("Exception type: ", exception_type)
+    print("What happend?: ", exception_object)
+    print("File name: ", filename)
+    print("Line number: ", line_number)

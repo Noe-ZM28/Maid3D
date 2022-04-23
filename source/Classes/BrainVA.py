@@ -15,6 +15,8 @@ import time
 import webbrowser as web
 from urllib.parse import quote
 
+import sys
+
 class Funtions:
     """
         Contiene los metodos correspondientes para la función del VA
@@ -70,18 +72,18 @@ class Funtions:
             '': ''
         }
         self.files = {
-            'notas': 'notas.txt',
+            'notas': 'C:/Users/brink/Downloads/#Z/workspace/Maid3D/source/Files/notas.txt',
             '': ''
         }
         self.programs = {
-                "navegador": "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-                "escritorio remoto": "C:\Program Files (x86)\TeamViewer\TeamViewer.exe",
-                "lol": "C:\Riot Games\Riot Client\RiotClientServices.exe",
-                "configuracion": "C:\Windows\System32\control.exe",
-                "word": "C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE",
-                "excel": "C:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE",
-                "power point": "C:\Program Files\Microsoft Office\root\Office16\POWERPNT.EXE",
-                "": "",
+            "navegador": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+            "escritorio remoto": "C:/Program Files (x86)/TeamViewer/TeamViewer.exe",
+            "lol": "C:/Riot Games/Riot Client/RiotClientServices.exe",
+            "configuracion": "C:/Windows/System32/control.exe",
+            "word": "C:/Program Files/Microsoft Office/root/Office16/WINWORD.EXE",
+            "excel": "C:/Program Files/Microsoft Office/root/Office16/EXCEL.EXE",
+            "power point": "C:/Program Files/Microsoft Office/root/Office16/POWERPNT.EXE",
+            "": "",
         }
         self.contacts = {
             'yo': '+525620504753',
@@ -102,7 +104,8 @@ class Funtions:
                 rec = rec.lower()
             
         except sr.UnknownValueError:
-            pass#self.talk("Disculpa, no te he entendido, ¿me lo puedes repetir?")
+            #self.talk("Disculpa, no te he entendido, ¿me lo puedes repetir?")
+            pass
         except UnboundLocalError:
             pass
         except Exception as e:
@@ -122,6 +125,38 @@ class Funtions:
         self.engine.say(text)
         self.engine.runAndWait()
 
+    def talk_sites(self):
+        if bool(self.sites) == True:
+            self.talk("Has agregado las siguientes páginas web")
+            for site in self.sites:
+                self.talk(site)
+        else:
+            self.talk("¡Aún no has agregado páginas web!")
+
+    def talk_programs(self):
+        if bool(self.programs) == True:
+            self.talk("Has agregado los siguientes programas")
+            for program in self.programs:
+                self.talk(program)
+        else:
+            self.talk("¡Aún no has agregado programas!")
+
+    def talk_files(self):
+        if bool(self.files) == True:
+            self.talk("Has agregado los siguientes archivos")
+            for file in self.files:
+                self.talk(file)
+        else:
+            self.talk("¡Aún no has agregado archivos!")
+
+    def talk_contacts(self):
+        if bool(self.contacts) == True:
+            self.talk("Has agregado los siguientes contactos")
+            for cont in self.contacts:
+                self.talk(cont)
+        else:
+            self.talk("¡Aún no has agregado contactos!")
+
     def play(self, music):
         pywhatkit.playonyt(music)
         print(f"Reproduciendo>: {music}")
@@ -137,8 +172,8 @@ class Funtions:
 
             file.write(rec_write + os.linesep)
             file.close()
-            self.talk('Terminé de escribir, este es el resultado')
             subp.Popen("notas.txt", shell=True)
+            self.talk('Terminé de escribir, este es el resultado')
 
         except Exception as e:
             exception_type, exception_object, exception_traceback = sys.exc_info()
@@ -157,6 +192,7 @@ class Funtions:
             message = self.listen("Escuchando mensaje>: ")
             print(message)
             pywhatkit.sendwhatmsg_instantly(number, message, 20, True, 5)
+            print(f"Mensaje enviado a: {contact}")
             self.talk(f"Mensaje enviado a: {contact}")
 
         except Exception as e:
@@ -208,11 +244,14 @@ class Funtions:
             print(f"{search}>: {wiki}")
             self.talk(wiki)
             time.sleep(0.1)
+            print(f'Busqueda terminada...')
             self.talk(f'Busqueda terminada...')
         except wikipedia.PageError:
+            print(f"Disculpa, no encontré resultados para {search}.")
             self.talk(f"Disculpa, no encontré resultados para {search}.")
             pass
         except wikipedia.DisambiguationError:
+            print(f"Lo siento, {search} es demasiado ambiguo, por favor sea mas claro en lo que quieres que busque.")
             self.talk(f"Lo siento, {search} es demasiado ambiguo, por favor sea mas claro en lo que quieres que busque.")
         except Exception as e:
             exception_type, exception_object, exception_traceback = sys.exc_info()
@@ -222,3 +261,42 @@ class Funtions:
             print("Exception type: ", exception_type)
             print("File name: ", filename)
             print("Line number: ", line_number)
+
+    def open_something(self, something):
+        """
+        """
+        try: 
+            something = something.replace(' ', '')
+
+            #<--------- P A G I N A S ---------------->
+            if something in self.sites:
+                for site in self.sites:
+                    if site in something:
+                        subp.call(f'start msedge.exe {self.sites[site]}', shell=True)
+                        print(f"Abriendo página: {site}")
+                        self.talk(f"Abriendo página: {site}")
+                        break
+            #<--------- P R O G R A M A S ------------>
+            elif something in self.programs:
+                for program in self.programs:
+                    if program in something:
+                        subp.Popen({self.programs[program]})
+                        print(f"Abriendo programa: {program}")
+                        self.talk(f"abriendo programa: {program}")
+                        break
+            #<--------- A R C H I V O S -------------->
+            elif something in self.files:
+                for file in self.files:
+                    if file in something:
+                        subp.Popen(f'{self.files[file]}', shell=True)
+                        print(f"Abriendo archivo: {file}")
+                        self.talk(f"abriendo archivo: {file}")
+                        break
+            else:
+                print(f'Lo siento, [{something}] no se encuentra dentro de la información guardada')
+                self.talk(f'Lo siento, {something} no se encuentra dentro de la información guardada')
+
+        except Exception as e:
+            print(f'{e}')
+
+#Brain = Funtions()

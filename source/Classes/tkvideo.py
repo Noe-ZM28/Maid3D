@@ -2,7 +2,7 @@ import threading
 import imageio
 from PIL import Image, ImageTk
 from time import sleep
-from tkinter import Label
+import sys
 
 class tkvideo():
     """ 
@@ -57,7 +57,7 @@ class tkvideo():
             the video's frames.
         """
         try: 
-            thread = threading.Thread(target=self.load, args=(self.path, self.loop, self.label))
+            thread = threading.Thread(target=self.load, name='Video-Gui',args=(self.path, self.loop, self.label))
             thread.daemon = 1
             thread.start()
             return thread #algun dia encontraré la forma de cerrar este hilo xd
