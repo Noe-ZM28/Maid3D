@@ -140,5 +140,9 @@ cython_debug/
 
 #vscode files
 .vscode/
+
+#others
 requirements/
 testCode/
+
+PyWhatKit_DB.txt

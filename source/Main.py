@@ -10,8 +10,7 @@ Brain = Funtions()
 #<----------------------------------------------------------------------------------->
 path_a = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//source//Fellings//Test//a.mp4'
 path_b = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//source//Fellings//Test//b.mp4'
-cut5 = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//source//Fellings//Test//cut5.mp4'
-cut = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//cut.mp4'
+path_c = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//source//Fellings//Test//cut5.mp4'
 
 width, height= pyautogui.size()
 pos_x = int(width/3)
@@ -78,10 +77,10 @@ def runVA():
                 elif 'escribe' in rec:
                     writte = rec.replace('escribe', '')
                     try:
-                        with open("notas.txt", "a") as file:
+                        with open("C:/Users/brink/Downloads/#Z/workspace/Maid3D/source/Files/notas.txt", "a") as file:
                             Brain.write(file)
                     except FileNotFoundError:
-                        file = open("notas.txt", "w")
+                        file = open("C:/Users/brink/Downloads/#Z/workspace/Maid3D/source/Files/notas.txt", "w")
                         Brain.write(file)
 
                 elif 'envía' in rec:
@@ -103,15 +102,15 @@ def runVA():
             elif 'video 1' in rec:
                 video = rec.replace('video 1','')
                 Brain.talk(f'reproduciendo: {rec}')
-                replace_video(path_a)
+                replace_video(path_b)
             elif 'video 2' in rec:
                 video = rec.replace('video 2','')
                 Brain.talk(f'reproduciendo: {rec}')
-                replace_video(path_b)
+                replace_video(path_a)
             elif 'video 3' in rec:
                 video = rec.replace('video 3','')
                 Brain.talk(f'reproduciendo: {rec}')
-                replace_video(path_b)
+                replace_video(path_c)
             elif "termina" in rec:
                 Brain.talk("Hasta pronto")
                 break
@@ -140,9 +139,9 @@ try:
     button1["bg"] = "white"
     button1.pack()
 
-    player = tkvideo(label = my_label, path = cut5, loop = True, size = size_video)
-    my_label.pack()
-    player.play_Video()
+    # player = tkvideo(label = my_label, path = cut5, loop = True, size = size_video)
+    # my_label.pack()
+    # player.play_Video()
     #<----------------------------------------------------------------------------------->
 
     main_window.mainloop()

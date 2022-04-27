@@ -47,9 +47,9 @@ class Funtions:
         self.listener = sr.Recognizer()
         self.engine = pyttsx3.init()
 
-        voices = self.engine.getProperty('voices')
+        self.voices = self.engine.getProperty('voices')
 
-        self.engine.setProperty('voice', voices[1].id) # 1 para español o 0 para ingles
+        self.engine.setProperty('voice', self.voices[1].id) # 1 para español o 0 para ingles
         self.engine.setProperty('rate', 178)
         self.engine.setProperty('volume', 0.7)
 
@@ -104,7 +104,7 @@ class Funtions:
                 rec = rec.lower()
             
         except sr.UnknownValueError:
-            #self.talk("Disculpa, no te he entendido, ¿me lo puedes repetir?")
+            self.talk("Disculpa, no te he entendido, ¿me lo puedes repetir?")
             pass
         except UnboundLocalError:
             pass
@@ -299,4 +299,6 @@ class Funtions:
         except Exception as e:
             print(f'{e}')
 
-#Brain = Funtions()
+Brain = Funtions()
+# for voice in Brain.voices:
+#     print(voice)
