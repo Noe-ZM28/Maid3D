@@ -95,6 +95,8 @@ def runVA():
                     if 'correo' in rec: #pendiente
                         contact = rec.replace('correo', '')
                         Brain.talk(f"Función no disponible")
+                        Brain.send_email(contact)
+                        
 
                 elif "termina" in rec:
                     Brain.talk("Hasta pronto")
