@@ -5,7 +5,6 @@ import wikipedia
 import subprocess as subp
 import os
 import json
-import pywhatkit
 
 from selenium import webdriver
 from selenium.webdriver.edge.service import Service
@@ -235,6 +234,38 @@ class Funtions:
             print("File name: ", filename)
             print("Line number: ", line_number)
 
+    def send_email(self, email_receiver):
+        try:
+            self.talk("¿Cuál es el asunto?")
+            subject = self.listen("Escuchando Asunto>: ")
+            print(f'Asunto>: {subject}')
+            self.talk("Asunto registrado")
+            
+            time.sleep(0.3)
+
+            self.talk("¿Cuál es el mensaje?")
+            message = self.listen("Escuchando Mensaje>: ")
+            print(f'Mensaje>: {message}')
+            self.talk("Mensaje registrado")
+
+
+            print(f"Correo enviado a: {email_receiver}")
+            self.talk(f"Correo enviado a: {email_receiver}")
+
+
+
+
+
+            #Falta agregar la función que envie el mensaje
+
+            print(f"""
+                        Destinatario: {email_receiver}
+                        Asunto: {subject}
+                        Mensaje: {message}
+                    """)
+        except Exception as e:
+            print(f'{e}')
+
     def search(self, search):
         """
         """
@@ -302,3 +333,4 @@ class Funtions:
 Brain = Funtions()
 # for voice in Brain.voices:
 #     print(voice)
+#Brain.send_email("some@some.com")
