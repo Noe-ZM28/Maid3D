@@ -141,9 +141,9 @@ try:
     button1["bg"] = "white"
     button1.pack()
 
-    # player = tkvideo(label = my_label, path = cut5, loop = True, size = size_video)
-    # my_label.pack()
-    # player.play_Video()
+    player = tkvideo(label = my_label, path = path_c, loop = True, size = size_video)
+    my_label.pack()
+    player.play_Video()
     #<----------------------------------------------------------------------------------->
 
     main_window.mainloop()
