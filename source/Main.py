@@ -5,155 +5,133 @@ import pyautogui
 import threading
 import sys
 
+class GUIVA():
+    def __init__(self):
+        self.Brain = Funtions()
+        self.path_a = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//source//Fellings//Test//a.mp4'
+        self.path_b = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//source//Fellings//Test//b.mp4'
+        self.path_c = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//source//Fellings//Test//c.mp4'
 
-Brain = Funtions()
-#<----------------------------------------------------------------------------------->
-path_a = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//source//Fellings//Test//a.mp4'
-path_b = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//source//Fellings//Test//b.mp4'
-path_c = 'C://Users//brink//Downloads//#Z//workspace//Maid3D//source//Fellings//Test//cut5.mp4'
+        self.width, self.height= pyautogui.size()
+        self.pos_x = int(self.width/3)
+        self.pos_y = int(self.height/8)
+        self.width_screen = 600
+        self.height_screen = 400
 
-width, height= pyautogui.size()
-pos_x = int(width/3)
-pos_y = int(height/8)
-width_screen = 600
-height_screen = 400
+        self.size_video = (self.width_screen-100,self.height_screen-100)
 
-size_video = (width_screen-100,height_screen-100)
+        self.main_window = Tk()
+        self.main_window.geometry(f"{self.width_screen}x{self.height_screen}+{self.pos_x}+{self.pos_y}")
+        self.main_window.resizable(0, 0)
+        self.main_window.configure(background = 'black')
 
-main_window = Tk()
-main_window.geometry(f"{width_screen}x{height_screen}+{pos_x}+{pos_y}")
-main_window.resizable(0, 0)
-main_window.configure(background = 'black')
+        self.my_label = Label(self.main_window)
 
-my_label = Label(main_window)
-#<----------------------------------------------------------------------------------->
+        button1 = Button(self.main_window, text="On", command= self.hilo_runVA)
+        button1["bg"] = "white"
+        button1.pack()
 
-#<----------------------------------------------------------------------------------->
-def replace_video(path_video):
-    """
-    """
-    try:
-        global my_label
-        my_label.destroy()
-        my_label = Label(main_window)
-        player = tkvideo(label = my_label, path = path_video, loop = True, size = size_video, Stop=True)
-        
-        my_label.pack()
-        player.play_Video()
-        
-    except Exception as e:
-        exception_type, exception_object, exception_traceback = sys.exc_info()
-        filename = exception_traceback.tb_frame.f_code.co_filename
-        line_number = exception_traceback.tb_lineno
-
-        print("Exception type: ", exception_type)
-        print("File name: ", filename)
-        print("Line number: ", line_number)
-
-def runVA():
-    while True:
+    def replace_video(self, path_video):
+        """
+        """
         try:
-            rec = Brain.listen("Esperando instrucción")   
-            print(f"Escuchando>: {rec}")  
-            if Brain.name in rec:
-                rec = rec.replace(Brain.name, '')
-
-                if 'reproduce' in rec:
-                    music = rec.replace('reproduce','')
-                    Brain.play(music)
-
-                elif 'repite' in rec:
-                    repeat = rec.replace('repite','')
-                    Brain.talk(repeat)
-
-                elif 'busca' in rec:
-                    search = rec.replace('busca', '')
-                    Brain.search(search)
-
-                elif 'abre' in rec:
-                    something = rec.replace('abre', '')
-                    Brain.open_something(something)
-
-                elif 'escribe' in rec:
-                    writte = rec.replace('escribe', '')
-                    try:
-                        with open("C:/Users/brink/Downloads/#Z/workspace/Maid3D/source/Files/notas.txt", "a") as file:
-                            Brain.write(file)
-                    except FileNotFoundError:
-                        file = open("C:/Users/brink/Downloads/#Z/workspace/Maid3D/source/Files/notas.txt", "w")
-                        Brain.write(file)
-
-                elif 'envía' in rec:
-                    contact = rec.replace('envia', '')
-                    if 'mensaje' in rec: #arreglar
-                        contact = rec.replace('mensaje', '')
-                        for contact in Brain.contacts:
-                            if contact in rec:
-                                Brain.talk(f"enviando mensaje para: {contact}")
-                                Brain.send_message_wha(contact = contact, number = Brain.contacts[contact])
-                    
-                    if 'correo' in rec: #pendiente
-                        contact = rec.replace('correo', '')
-                        Brain.talk(f"Función no disponible")
-                        Brain.send_email(contact)
-                        
-
-                elif "termina" in rec:
-                    Brain.talk("Hasta pronto")
-                    break
-            elif 'video 1' in rec:
-                video = rec.replace('video 1','')
-                Brain.talk(f'reproduciendo: {rec}')
-                replace_video(path_b)
-            elif 'video 2' in rec:
-                video = rec.replace('video 2','')
-                Brain.talk(f'reproduciendo: {rec}')
-                replace_video(path_a)
-            elif 'video 3' in rec:
-                video = rec.replace('video 3','')
-                Brain.talk(f'reproduciendo: {rec}')
-                replace_video(path_c)
-            elif "termina" in rec:
-                Brain.talk("Hasta pronto")
-                break
-        except UnboundLocalError:
-            continue
+            self.my_label.destroy()
+            self.my_label = Label(self.main_window)
+            player = tkvideo(label = self.my_label, path = path_video, loop = True, size = self.size_video, Stop=True)
+            
+            self.my_label.pack()
+            player.play_Video()
+            
         except Exception as e:
-            exception_type, exception_object, exception_traceback = sys.exc_info()
-            filename = exception_traceback.tb_frame.f_code.co_filename
-            line_number = exception_traceback.tb_lineno
+            print(f"{e}")
 
-            print("Exception type: ", exception_type)
-            print("File name: ", filename)
-            print("Line number: ", line_number)
+    def runVA(self):
+        while True:
+            try:
+                rec = self.Brain.listen("Esperando instrucción")   
+                print(f"Escuchando>: {rec}")  
+                if self.Brain.name in rec:
+                    rec = rec.replace(self.Brain.name, '')
 
-def hilo_runVA():
-    thread = threading.Thread(target=runVA, name='Asistente V')
-    thread.daemon = 1
-    thread.start()
-    return thread #algun dia encontraré la forma de cerrar este hilo xd
+                    if 'reproduce' in rec:
+                        music = rec.replace('reproduce','')
+                        self.Brain.play(music)
 
+                    elif 'repite' in rec:
+                        repeat = rec.replace('repite','')
+                        self.Brain.talk(repeat)
+
+                    elif 'busca' in rec:
+                        search = rec.replace('busca', '')
+                        self.Brain.search(search)
+
+                    elif 'abre' in rec:
+                        something = rec.replace('abre', '')
+                        self.Brain.open_something(something)
+
+                    elif 'escribe' in rec:
+                        writte = rec.replace('escribe', '')
+                        try:
+                            with open("C:/Users/brink/Downloads/#Z/workspace/Maid3D/source/Files/notas.txt", "a") as file:
+                                self.Brain.write(file)
+                        except FileNotFoundError:
+                            file = open("C:/Users/brink/Downloads/#Z/workspace/Maid3D/source/Files/notas.txt", "w")
+                            self.Brain.write(file)
+
+                    elif 'envía' in rec:
+                        contact = rec.replace('envia', '')
+                        if 'mensaje' in rec: #arreglar
+                            contact = rec.replace('mensaje', '')
+                            for contact in self.Brain.contacts:
+                                if contact in rec:
+                                    self.Brain.talk(f"enviando mensaje para: {contact}")
+                                    self.Brain.send_message_wha(contact = contact, number = self.Brain.contacts[contact])
+                        
+                        if 'correo' in rec: #pendiente
+                            contact = rec.replace('correo', '')
+                            self.Brain.talk(f"Función no disponible")
+                            self.Brain.send_email(contact)
+                            
+
+                    elif "termina" in rec:
+                        self.Brain.talk("Hasta pronto")
+                        break
+                elif 'video 1' in rec:
+                    video = rec.replace('video 1','')
+                    self.Brain.talk(f'reproduciendo: {rec}')
+                    self.replace_video(self.path_b)
+                elif 'video 2' in rec:
+                    video = rec.replace('video 2','')
+                    self.Brain.talk(f'reproduciendo: {rec}')
+                    self.replace_video(self.path_a)
+                elif 'video 3' in rec:
+                    video = rec.replace('video 3','')
+                    self.Brain.talk(f'reproduciendo: {rec}')
+                    self.replace_video(self.path_c)
+                elif "termina" in rec:
+                    self.Brain.talk("Hasta pronto")
+                    break
+            except UnboundLocalError:
+                continue
+            except Exception as e:
+                print(f"{e}")
+
+    def hilo_runVA(self):
+        try: 
+            thread = threading.Thread(target=self.runVA, name='Asistente V')
+            thread.daemon = 1
+            thread.start()
+            return thread #algun dia encontraré la forma de cerrar este hilo xd
+        except Exception as e:
+            print(f"{e}")
+
+    def start(self):
+        self.main_window.mainloop()
+
+# player = tkvideo(label = self.my_label, path = path_c, loop = True, size = size_video)
+# self.my_label.pack()
+# player.play_Video()
 #<----------------------------------------------------------------------------------->
 
-#<------------------------------------- G U I---------------------------------------------->
-try:
-    button1 = Button(main_window, text="On", command= hilo_runVA)
-    button1["bg"] = "white"
-    button1.pack()
 
-    player = tkvideo(label = my_label, path = path_c, loop = True, size = size_video)
-    my_label.pack()
-    player.play_Video()
-    #<----------------------------------------------------------------------------------->
-
-    main_window.mainloop()
-
-except Exception as e:
-    exception_type, exception_object, exception_traceback = sys.exc_info()
-    filename = exception_traceback.tb_frame.f_code.co_filename
-    line_number = exception_traceback.tb_lineno
-
-    print("Exception type: ", exception_type)
-    print("What happend?: ", exception_object)
-    print("File name: ", filename)
-    print("Line number: ", line_number)
+GUIVA().start()

@@ -28,44 +28,40 @@ class tkvideo():
         self.size = size
         self.Stop = Stop
 
-    def load(self, path, loop, label):
+    def load(self):
         """
             Loads the video's frames recursively onto the selected label widget's image parameter.
             Loop parameter controls whether the function will run in an infinite loop
             or once.
         """
+        try:
+            frame_data = imageio.get_reader(self.path)
+            def play_video():
+                for image in frame_data.iter_data():
+                    frame_image = ImageTk.PhotoImage(Image.fromarray(image).resize(self.size))
+                    self.label.config(image=frame_image)
+                    self.label.image = frame_image
+                    sleep(0.01)
 
-        frame_data = imageio.get_reader(path)
-        def play_video():
-            for image in frame_data.iter_data():
-                frame_image = ImageTk.PhotoImage(Image.fromarray(image).resize(self.size))
-                label.config(image=frame_image)
-                label.image = frame_image
-                sleep(0.01)
-
+                else:
+                    pass
+            if self.loop:
+                while True:
+                    play_video()
             else:
-                pass
-        if loop:
-            while True:
                 play_video()
-        else:
-            play_video()
-
+        except Exception as e:
+            print(f"{e}")
     def play_Video(self):
         """
             Creates and starts a thread as a daemon that plays the video by rapidly going through
             the video's frames.
         """
         try: 
-            thread = threading.Thread(target=self.load, name='Video-Gui',args=(self.path, self.loop, self.label))
-            thread.daemon = 1
-            thread.start()
-            return thread #algun dia encontraré la forma de cerrar este hilo xd
+            self.thread = threading.Thread(target=self.load, name='Video')
+            self.thread.daemon = 1
+            self.thread.start()
+            #algun dia encontraré la forma de cerrar este hilo xd
         except Exception as e:
-            exception_type, exception_object, exception_traceback = sys.exc_info()
-            filename = exception_traceback.tb_frame.f_code.co_filename
-            line_number = exception_traceback.tb_lineno
+            print(f"{e}")
 
-            print("Exception type: ", exception_type)
-            print("File name: ", filename)
-            print("Line number: ", line_number)
