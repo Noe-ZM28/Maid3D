@@ -86,7 +86,7 @@ class Funtions:
         }
         self.contacts = {
             'yo': '+525620504753',
-            'lala': '',
+            '': '',
             'alina': '+525567038818'
         }
 

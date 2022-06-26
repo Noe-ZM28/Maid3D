@@ -142,7 +142,5 @@ cython_debug/
 .vscode/
 
 #others
-requirements/
-testCode/
 
 PyWhatKit_DB.txt

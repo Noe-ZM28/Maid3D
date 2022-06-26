@@ -1,0 +1,35 @@
+{
+    "sites": [{
+        "google": "google.com",
+        "youtube": "youtube.com",
+        "escuela": "http://cursos2.tlalnepantla.tecnm.mx",
+        "twitter": "https://twitter.com/?lang=es"
+    }],
+    "files": [{
+        "notas": "notas.txt"
+    }],
+    "programs": [{
+        "navegador": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+        "escritorio remoto": "C:/Program Files (x86)/TeamViewer/TeamViewer.exe",
+        "lol": "C:/Riot Games/Riot Client/RiotClientServices.exe",
+        "configuracion": "C:/Windows/System32/control.exe",
+        "word": "C:/Program Files/Microsoft Office/root/Office16/WINWORD.EXE",
+        "excel": "C:/Program Files/Microsoft Office/root/Office16/EXCEL.EXE",
+        "power point": "C:/Program Files/Microsoft Office/root/Office16/POWERPNT.EXE",
+        "": ""
+    }],
+    "contacts": {
+        "yo": {
+            "number": "+525620504753",
+            "email": "algo@gmail.com"
+        },
+        "lala": {
+            "number": "",
+            "email": ""
+        },
+        "alina": {
+            "number": "+525567038818",
+            "email": "+some@gmail.com"
+        }
+    }
+}
